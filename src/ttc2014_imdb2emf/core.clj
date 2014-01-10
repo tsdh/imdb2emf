@@ -55,8 +55,6 @@
                                           "(TV)" movietype-tv
                                           nil    movietype-movie))
               movie-id (str/trim (str title " " year-n (when type (str " " type))))]
-          (when (= title "#1 With A Bullet")
-            (println (str "ID = '" movie-id "'")))
           (swap! *movies-map* assoc
                  movie-id
                  movie)
@@ -77,8 +75,6 @@
       (when match
         (let [[_ actor-name movie-id] match
               movie-id (str/trim movie-id)]
-          (when (re-matches #".*With A Bullet.*" movie-id)
-            (println (str "REF = '" movie-id "'")))
           (when actor-name
             ;; New actor starts, so persist the current one
             (when (and @current-actor (seq @current-movies))
@@ -139,14 +135,17 @@
           [cactors cactresses cratings] [@fut-actors @fut-actresses @fut-ratings]]
       ;;(print-class-counts)
       (println)
+      (println "Movies with zero actors:")
+      (doseq [[mid m] (filter (fn [[id m]]
+                                (zero? (count (emf/eget m :persons))))
+                              @*movies-map*)]
+        (println (str "  - '" mid "'")))
+      (println)
       (println "Parsed" cmovies "movies with" cactors "actors,"
                cactresses "actresses, and"
                cratings "ratings.")
       (println (+ cmovies cactors cactresses) "elements in total.")
       (println)
-      (println (count (filter #(> 2 (count (emf/eget % :persons)))
-                              (vals @*movies-map*)))
-               "movies with less than two actors.")
       (reset! *movies-map* nil)
       (emf/save-model *model* (if (= -1 max-movie-count)
                                 "imdb.movies"
