@@ -47,13 +47,13 @@
         (swap! i inc)
         (let [[_ title year-n type year] match
               movie (emf/ecreate! *model* 'Movie
-                                  :name title
-                                  :year (Integer/parseInt year)
-                                  :type (case type
-                                          "(V)"  movietype-video
-                                          "(VG)" movietype-videogame
-                                          "(TV)" movietype-tv
-                                          nil    movietype-movie))
+                                  :title title
+                                  :year  (Integer/parseInt year)
+                                  :type  (case type
+                                           "(V)"  movietype-video
+                                           "(VG)" movietype-videogame
+                                           "(TV)" movietype-tv
+                                           nil    movietype-movie))
               movie-id (str/trim (str title " " year-n (when type (str " " type))))]
           (swap! *movies-map* assoc
                  movie-id
@@ -81,7 +81,7 @@
               (swap! i inc)
               (locking *model*
                 (emf/ecreate! *model* cls
-                              :name actor-name
+                              :name   actor-name
                               :movies @current-movies)
                 (when PRINT-STUFF
                   (println (str cls ": " actor-name " \t=> " (count @current-movies) " Movie(s)")))))

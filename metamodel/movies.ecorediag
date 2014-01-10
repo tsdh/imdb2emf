@@ -72,7 +72,7 @@
     <children xmi:type="notation:Node" xmi:id="__jsnkGm6EeOgU4H00UbsVg" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="__jsnkWm6EeOgU4H00UbsVg" type="5001">
       <children xmi:type="notation:Node" xmi:id="_YsYsAHYsEeODdYFlX7ir-A" type="2001">
-        <element xmi:type="ecore:EAttribute" href="movies.ecore#//Movie/name"/>
+        <element xmi:type="ecore:EAttribute" href="movies.ecore#//Movie/title"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_YsYsAXYsEeODdYFlX7ir-A"/>
       </children>
       <children xmi:type="notation:Node" xmi:id="_qiCwkHn-EeOSFrHXX3y0Cw" type="2001">
