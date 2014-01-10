@@ -1,5 +1,5 @@
-(ns ttc2014-imdb2emf.main
-  (:require [ttc2014-imdb2emf.core :refer :all]))
+(ns imdb2emf.main
+  (:require [imdb2emf.core :refer :all]))
 
 (defn -main [& args]
   (when (or (zero? (count args))

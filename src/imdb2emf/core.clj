@@ -1,4 +1,4 @@
-(ns ttc2014-imdb2emf.core
+(ns imdb2emf.core
   (:require [clojure.java.io   :as io]
             [clojure.string    :as str]
             [funnyqt.utils     :as u]

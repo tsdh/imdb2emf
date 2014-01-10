@@ -1,4 +1,4 @@
-(defproject ttc2014-imdb2emf "0.1.0-SNAPSHOT"
+(defproject imdb2emf "0.1.0-SNAPSHOT"
   :description "A Parser from IMDb files to EMF models."
   :url "http://example.com/FIXME"
   :license {:name "GNU General Public License"
@@ -7,4 +7,4 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [funnyqt "0.14.0"]]
   :jvm-opts ^:replace ["-Xmx2G"]
-  :main ttc2014-imdb2emf.main)
+  :main imdb2emf.main)
