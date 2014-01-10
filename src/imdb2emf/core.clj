@@ -136,10 +136,13 @@
       ;;(print-class-counts)
       (println)
       (println "Movies with zero actors:")
-      (doseq [[mid m] (filter (fn [[id m]]
-                                (zero? (count (emf/eget m :persons))))
-                              @*movies-map*)]
-        (println (str "  - '" mid "'")))
+      (let [i (atom 0)]
+        (doseq [[mid m] (filter (fn [[id m]]
+                                  (zero? (count (emf/eget m :persons))))
+                                @*movies-map*)]
+          (swap! i inc)
+          (println (str "  - '" mid "'")))
+        (println @i "movies with zero actors in total."))
       (println)
       (println "Parsed" cmovies "movies with" cactors "actors,"
                cactresses "actresses, and"
