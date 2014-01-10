@@ -7,7 +7,7 @@
   (:import (java.util.zip GZIPInputStream)
            (java.io File)))
 
-(def PRINT-STUFF false)
+(def +verbose+ true)
 
 (emf/load-metamodel "metamodel/movies.ecore")
 
@@ -58,7 +58,7 @@
           (swap! *movies-map* assoc
                  movie-id
                  movie)
-          (when PRINT-STUFF
+          (when +verbose+
             (println (str "Movie: " title " (" year ") " type))))))
     @i))
 
@@ -83,7 +83,7 @@
                 (emf/ecreate! *model* cls
                               :name   actor-name
                               :movies @current-movies)
-                (when PRINT-STUFF
+                (when +verbose+
                   (println (str cls ": " actor-name " \t=> " (count @current-movies) " Movie(s)")))))
             (reset! current-actor  actor-name)
             (reset! current-movies #{}))
@@ -104,7 +104,7 @@
             (swap! i inc)
             (locking *model*
               (emf/eset! movie :rating (Double/parseDouble rating))
-              (when PRINT-STUFF
+              (when +verbose+
                 (println (str "Rating: " movie-id "\t=> " rating))))))))
     @i))
 
