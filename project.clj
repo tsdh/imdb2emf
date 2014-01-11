@@ -5,6 +5,6 @@
             :url "http://www.gnu.org/licenses/gpl.html"
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [funnyqt "0.14.0"]]
+                 [funnyqt "0.14.1"]]
   :jvm-opts ^:replace ["-Xmx2G"]
   :main imdb2emf.main)

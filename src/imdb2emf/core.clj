@@ -148,8 +148,5 @@
                cactresses "actresses, and"
                cratings "ratings.")
       (println (+ cmovies cactors cactresses) "elements in total.")
-      (println)
-      (reset! *movies-map* nil)
-      (emf/save-model *model* (if (= -1 max-movie-count)
-                                "imdb.movies"
-                                (str "imdb-" max-movie-count ".movies"))))))
+      (println))
+    *model*))

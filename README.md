@@ -23,17 +23,18 @@ Usage: lein run <imdb-dir>
 $ lein run path/to/imdb/ 1000
 ````
 
-The last command will parse the first 1000 movies and all actors and actresses
-that act at least in one of these movies.  If you don't provide a maximum movie
-number, it'll parse the complete database.  That will be about one million
-movies, 1.5 million actors, 800k actresses, and 300k ratings.
+The last command will parse the first 1000 movies, all ratings of those movies,
+and all actors and actresses that act at least in one of these movies.  (First,
+the movies.list.gz file is parsed.  Thereafter, the actors.list.gz,
+actresses.list.gz, and ratings.list.gz are parsed in parallel).
+
+If you don't provide a maximum movie number, it'll parse the complete database.
+That will be about one million movies, 1.5 million actors, 800k actresses, and
+300k ratings.
 
 The resulting models are named `imdb-<max-movie-count>.movies` if a maximum
 movie number was provided and `imdb.movies` when the complete database is
 parsed.
-
-Take care: the parsing and creation of movies and actors is pretty fast, but
-saving the resulting EMF models takes ages! :-(
 
 ## License
 
