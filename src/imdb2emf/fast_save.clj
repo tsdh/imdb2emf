@@ -11,26 +11,28 @@
   (str/join " " (map #(str "/" (pos-map %))
                      refs)))
 
-(defn person-props-to-xml [el pos-map]
-  (str (when-let [ms (seq (emf/eget el :movies))]
-         (str "movies=\"" (ref-list ms pos-map) "\" "))
-       ;; Some Actors/Acresses have a REPLACEMENT CHARACTER in their name,
-       ;; probably cause the IMDb files have a broken encoding.
-       "name=\"" (str/replace (emf/eget el :name)
-                              "\uFFFD" "&#xfffd;") "\""))
+(defn escape-val [el attr]
+  (-> (emf/eget el attr)
+      (str/replace "&"  "&amp;")
+      (str/replace "<"  "&lt;")
+      (str/replace ">"  "&gt;")
+      (str/replace "\"" "&quot;")
+      (str/replace "'"  "&apos;")
+      (str/replace "\uFFFD" "&#xFFFD;")))
 
-(poly/defpolyfn to-xml 'movies.Actor [el pos-map]
-  (str "  <movies:Actor " (person-props-to-xml el pos-map) "/>"))
-
-(poly/defpolyfn to-xml 'movies.Actress [el pos-map]
-  (str "  <movies:Actress " (person-props-to-xml el pos-map) "/>"))
+(poly/defpolyfn to-xml 'movies.Person [el pos-map]
+  (str "  <movies:" (.getName (emf/eclass el))
+       (when-let [ms (seq (emf/eget el :movies))]
+         (str " movies=\"" (ref-list ms pos-map) "\""))
+       " name=\"" (escape-val el :name) "\""
+       "/>"))
 
 (poly/defpolyfn to-xml 'movies.Movie [el pos-map]
   (str "  "
        "<movies:Movie "
        (when-let [ps (seq (emf/eget el :persons))]
          (str "persons=\"" (ref-list ps pos-map) "\" "))
-       "title=\"" (emf/eget el :title) "\" "
+       "title=\"" (escape-val el :title) "\" "
        "year=\"" (emf/eget el :year) "\""
        (let [t (emf/eget el :type)]
          (when (not= t i2e/movietype-movie)
