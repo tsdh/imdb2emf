@@ -21,7 +21,7 @@
       (str/replace "\uFFFD" "&#xFFFD;")))
 
 (poly/defpolyfn to-xml 'movies.Person [el pos-map]
-  (str "  <movies:" (.getName (emf/eclass el))
+  (str "  <movies:" (.getName ^org.eclipse.emf.ecore.EClass (emf/eclass el))
        (when-let [ms (seq (emf/eget el :movies))]
          (str " movies=\"" (ref-list ms pos-map) "\""))
        " name=\"" (escape-val el :name) "\""
@@ -46,12 +46,11 @@
   (let [pos-map (zipmap (emf/eallobjects model)
                         (range))]
     (println "Saving model to" file-name)
-    (time
-     (with-open [w (java.io.PrintWriter. (io/file file-name))]
-       (.println w "<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-       (.println w "<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:movies=\"http://movies/1.0\">")
+    (with-open [w (java.io.PrintWriter. (io/file file-name))]
+      (.println w "<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+      (.println w "<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:movies=\"http://movies/1.0\">")
 
-       (doseq [el (emf/eallobjects model)]
-         (.println w (to-xml el pos-map)))
+      (doseq [el (emf/eallobjects model)]
+        (.println w (to-xml el pos-map)))
 
-       (.println w "</xmi:XMI>")))))
+      (.println w "</xmi:XMI>"))))

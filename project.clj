@@ -1,4 +1,4 @@
-(defproject imdb2emf "0.1.0-SNAPSHOT"
+(defproject imdb2emf "0.1.0"
   :description "A Parser from IMDb files to EMF models."
   :url "http://example.com/FIXME"
   :license {:name "GNU General Public License"
@@ -7,4 +7,6 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [funnyqt "0.14.1"]]
   :jvm-opts ^:replace ["-Xmx2G"]
+  :global-vars {*warn-on-reflection* true
+                *assert* false}
   :main imdb2emf.main)

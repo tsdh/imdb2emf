@@ -11,7 +11,7 @@
 
 (emf/load-metamodel "metamodel/movies.ecore")
 
-(defn file-line-seq [file-name]
+(defn file-line-seq [^String file-name]
   (cond
    (.endsWith file-name ".list.gz")
    (line-seq (io/reader (GZIPInputStream. (io/input-stream file-name))))
