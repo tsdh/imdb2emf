@@ -6,13 +6,14 @@
             [funnyqt.emf       :as emf]
             [funnyqt.polyfns   :as poly])
   (:import (java.io ObjectOutputStream FileOutputStream Serializable
-                    ObjectInputStream FileInputStream EOFException)))
+                    ObjectInputStream FileInputStream EOFException
+                    BufferedInputStream BufferedOutputStream)))
 
 (defn save-movies-model [model ^String file-name]
   (let [movie-pos-map (zipmap (emf/eallobjects model 'Movie)
                               (range))]
     (println "Saving model to" file-name)
-    (with-open [oos (ObjectOutputStream. (FileOutputStream. file-name))]
+    (with-open [oos (ObjectOutputStream. (BufferedOutputStream. (FileOutputStream. file-name)))]
       (doseq [movie (emf/eallobjects model 'Movie)]
         ;; tag: 0 => Movie
         (.writeByte oos 0)
@@ -31,7 +32,7 @@
 (defn read-movies-model [^String file-name]
   (let [movies (atom [])
         model  (emf/new-model)]
-    (with-open [ois (ObjectInputStream. (FileInputStream. file-name))]
+    (with-open [ois (ObjectInputStream. (BufferedInputStream. (FileInputStream. file-name)))]
       (letfn [(read-movie []
                 (let [m (emf/ecreate! model 'Movie)]
                   (swap! movies conj m)
