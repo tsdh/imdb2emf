@@ -125,7 +125,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="__vA8kXY4EeODdYFlX7ir-A" fontColor="4210752" fontName="Cantarell" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EEnum" href="movies.ecore#//MovieType"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="__vA8knY4EeODdYFlX7ir-A" x="276" y="12"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="__vA8knY4EeODdYFlX7ir-A" x="432" y="12"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="__g-DsWm6EeOgU4H00UbsVg"/>
   <element xmi:type="ecore:EPackage" href="movies.ecore#/"/>
@@ -200,5 +200,19 @@
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="__jyuN2m6EeOgU4H00UbsVg" points="[5, 0, 23, -85]$[5, 77, 23, -8]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YtZFsHY5EeODdYFlX7ir-A" id="(0.5,1.0)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_YtZFsXY5EeODdYFlX7ir-A" id="(0.20588235294117646,0.18604651162790697)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_3qO9MHwfEeOtvPGvaY3R6Q" type="3002" source="__jqLUGm6EeOgU4H00UbsVg" target="__jsAgGm6EeOgU4H00UbsVg">
+    <children xmi:type="notation:Node" xmi:id="_3qRZcHwfEeOtvPGvaY3R6Q" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_3qRZcXwfEeOtvPGvaY3R6Q" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_3qSAgHwfEeOtvPGvaY3R6Q" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_3qSAgXwfEeOtvPGvaY3R6Q" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_3qO9MXwfEeOtvPGvaY3R6Q" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_3qO9MnwfEeOtvPGvaY3R6Q" fontColor="4210752" fontName="DejaVu Sans" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="movies.ecore#//Couple/commonMovies"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_3qO9M3wfEeOtvPGvaY3R6Q" points="[9, -8, 167, 124]$[9, -132, 167, 0]$[-145, -132, 13, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3qW5AHwfEeOtvPGvaY3R6Q" id="(0.5196078431372549,0.21428571428571427)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3qW5AXwfEeOtvPGvaY3R6Q" id="(0.9044117647058824,0.3402061855670103)"/>
   </edges>
 </notation:Diagram>

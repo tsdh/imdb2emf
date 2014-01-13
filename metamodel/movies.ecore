@@ -11,6 +11,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Couple">
     <eStructuralFeatures xsi:type="ecore:EReference" name="p1" eType="#//Person"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="p2" eType="#//Person"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commonMovies" upperBound="-1"
+        eType="#//Movie"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Movie">
     <eStructuralFeatures xsi:type="ecore:EReference" name="persons" upperBound="-1"
