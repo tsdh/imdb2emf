@@ -1,7 +1,7 @@
 (ns imdb2emf.main
   (:require [imdb2emf.core      :as i2e]
-            [imdb2emf.fast-save :as fs]
-            [imdb2emf.serialize :as s]))
+            [imdb2emf.fast-save :as xmi]
+            [imdb2emf.serialize :as bin]))
 
 (defn -main [& args]
   (when (or (zero? (count args))
@@ -17,5 +17,5 @@
         fname (if (= -1 max-movie-count)
                 "imdb.movies"
                 (str "imdb-" max-movie-count ".movies"))]
-    (fs/save-movies-model model fname)
-    (s/save-movies-model model (str fname ".bin"))))
+    (xmi/save-movies-model model fname)
+    (bin/save-movies-model model (str fname ".bin"))))
