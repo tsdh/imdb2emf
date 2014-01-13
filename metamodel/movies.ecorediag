@@ -55,6 +55,10 @@
   <children xmi:type="notation:Node" xmi:id="__jqLUGm6EeOgU4H00UbsVg" type="1001">
     <children xmi:type="notation:Node" xmi:id="__jqyYGm6EeOgU4H00UbsVg" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="__jqyYWm6EeOgU4H00UbsVg" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_hkRWMHwgEeOxh6jFtlu2gQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="movies.ecore#//Couple/avgRating"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_hkRWMXwgEeOxh6jFtlu2gQ"/>
+      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="__jqyYmm6EeOgU4H00UbsVg"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="__jqyY2m6EeOgU4H00UbsVg"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="__jqyZGm6EeOgU4H00UbsVg"/>
