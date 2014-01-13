@@ -56,6 +56,5 @@
               0 (read-movie)
               1 (read-person 'Actor)
               2 (read-person 'Actress)))
-          (catch EOFException e
-            (.printStackTrace e)))))
+          (catch EOFException _))))
     model))
