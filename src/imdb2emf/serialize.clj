@@ -41,7 +41,7 @@
                   (swap! movies conj m)
                   (emf/eadd! model m)
                   (emf/eset! m :title (.readUTF ois))
-                  (emf/eset! m :year  (.readShort ois))
+                  (emf/eset! m :year  (int (.readShort ois)))
                   (emf/eset! m :type  (condp == (.readByte ois)
                                         0   i2e/movietype-movie
                                         1   i2e/movietype-tv

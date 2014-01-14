@@ -32,9 +32,12 @@ If you don't provide a maximum movie number, it'll parse the complete database.
 That will be about one million movies, 1.5 million actors, 800k actresses, and
 300k ratings.
 
-The resulting models are named `imdb-<max-movie-count>.movies` if a maximum
-movie number was provided and `imdb.movies` when the complete database is
-parsed.
+The resulting XMI model files are named `imdb-<max-movie-count>.movies` if a
+maximum movie number was provided and `imdb.movies` when the complete database
+is parsed.
+
+Additionally, the models are saved in a binary coding which is more space
+efficient and much faster to load.  Those files have the ending `.movies.bin`.
 
 ## License
 
