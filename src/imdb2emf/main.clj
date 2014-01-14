@@ -1,7 +1,8 @@
 (ns imdb2emf.main
   (:require [imdb2emf.core      :as i2e]
             [imdb2emf.fast-save :as xmi]
-            [imdb2emf.serialize :as bin]))
+            [imdb2emf.serialize :as bin])
+  (:gen-class))
 
 (defn -main [& args]
   (when (or (zero? (count args))

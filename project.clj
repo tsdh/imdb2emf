@@ -5,8 +5,9 @@
             :url "http://www.gnu.org/licenses/gpl.html"
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [funnyqt "0.14.1"]]
+                 [funnyqt "0.14.4"]]
   :jvm-opts ^:replace ["-Xmx2G"]
   :global-vars {*warn-on-reflection* true
                 *assert* false}
-  :main imdb2emf.main)
+  :main imdb2emf.main
+  :aot  [imdb2emf.main imdb2emf.serialize])

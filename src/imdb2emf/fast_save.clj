@@ -5,8 +5,6 @@
             [funnyqt.emf       :as emf]
             [funnyqt.polyfns   :as poly]))
 
-(poly/declare-polyfn to-xml [el pos-map])
-
 (defn ref-list [refs pos-map]
   (str/join " " (map #(str "/" (pos-map %))
                      refs)))
@@ -19,6 +17,8 @@
       (str/replace "\"" "&quot;")
       (str/replace "'"  "&apos;")
       (str/replace "\uFFFD" "&#xFFFD;")))
+
+(poly/declare-polyfn to-xml [el pos-map])
 
 (poly/defpolyfn to-xml 'movies.Person [el pos-map]
   (str "  <movies:" (.getName ^org.eclipse.emf.ecore.EClass (emf/eclass el))

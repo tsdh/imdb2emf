@@ -9,7 +9,7 @@
 
 (def +verbose+ true)
 
-(emf/load-metamodel "metamodel/movies.ecore")
+(emf/load-metamodel (io/resource "movies.ecore"))
 
 (defn file-line-seq [^String file-name]
   (cond

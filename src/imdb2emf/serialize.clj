@@ -7,7 +7,10 @@
             [funnyqt.polyfns   :as poly])
   (:import (java.io DataOutputStream FileOutputStream Serializable
                     DataInputStream FileInputStream EOFException
-                    BufferedInputStream BufferedOutputStream)))
+                    BufferedInputStream BufferedOutputStream))
+  (:gen-class
+   :name imdb2emf.serialize.BinaryUtil
+   :methods [^:static [readBinaryMoviesFile [String] org.eclipse.emf.ecore.resource.Resource]]))
 
 (defn save-movies-model [model ^String file-name]
   (let [movie-pos-map (zipmap (emf/eallobjects model 'Movie)
@@ -64,3 +67,6 @@
               2 (read-person 'Actress)))
           (catch EOFException _))))
     model))
+
+(defn -readBinaryMoviesFile [file-name]
+  (.resource ^funnyqt.emf_protocols.EMFModel (read-movies-model file-name)))
