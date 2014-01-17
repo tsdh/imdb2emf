@@ -2,7 +2,7 @@
   (:require [clojure.java.io   :as io]
             [clojure.string    :as str]
             [imdb2emf.core     :as i2e]
-            [funnyqt.protocols :as p]
+            [funnyqt.generic   :as g]
             [funnyqt.emf       :as emf]
             [funnyqt.polyfns   :as poly])
   (:import (java.io DataOutputStream FileOutputStream Serializable
@@ -27,7 +27,7 @@
         (.writeDouble oos (emf/eget movie :rating)))
       (doseq [person (emf/eallobjects model 'Person)]
         ;; tag: 1 => Actor, 2 => Actress
-        (.writeByte oos (if (p/has-type? person 'Actor) 1 2))
+        (.writeByte oos (if (g/has-type? person 'Actor) 1 2))
         (.writeUTF oos (emf/eget person :name))
         (doseq [mov (emf/eget-raw person :movies)]
           (.writeInt oos (movie-pos-map mov)))
@@ -36,7 +36,7 @@
 
 (defn read-movies-model [^String file-name]
   (let [movies (atom [])
-        model  (emf/new-model)]
+        model  (emf/new-resource)]
     (with-open [ois (DataInputStream. (BufferedInputStream.
                                        (FileInputStream. file-name)))]
       (letfn [(read-movie []
@@ -69,4 +69,4 @@
     model))
 
 (defn -readBinaryMoviesFile [file-name]
-  (.resource ^funnyqt.emf_protocols.EMFModel (read-movies-model file-name)))
+  (read-movies-model file-name))

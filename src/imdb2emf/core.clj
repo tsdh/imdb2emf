@@ -3,13 +3,13 @@
             [clojure.string    :as str]
             [funnyqt.utils     :as u]
             [funnyqt.emf       :as emf]
-            [funnyqt.protocols :as p])
+            [funnyqt.generic   :as g])
   (:import (java.util.zip GZIPInputStream)
            (java.io File)))
 
 (def +verbose+ true)
 
-(emf/load-metamodel (io/resource "movies.ecore"))
+(emf/load-ecore-resource (io/resource "movies.ecore"))
 
 (defn file-line-seq [^String file-name]
   (cond
@@ -121,12 +121,12 @@
     (println "============")
     (println)
     (doseq [[cls cnt] @counts]
-      (println (str "#" (p/qname cls) ": " cnt)))
+      (println (str "#" (g/qname cls) ": " cnt)))
     (println (reduce + (vals @counts)) "elements in total")
     (println)))
 
 (defn parse-imdb [dir max-movie-count]
-  (binding [*model*      (emf/new-model)
+  (binding [*model*      (emf/new-resource)
             *movies-map* (atom {})]
     (let [cmovies       (parse-movies (pick-file dir "movies") max-movie-count)
           fut-actors    (future (parse-actors  (pick-file dir "actors")))
