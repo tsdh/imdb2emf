@@ -11,3 +11,4 @@ imdb/
 bin/
 doc/
 *.movies
+*.bin
