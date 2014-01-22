@@ -1,7 +1,7 @@
 (ns imdb2emf.main
-  (:require [imdb2emf.core      :as i2e]
-            [imdb2emf.fast-save :as xmi]
-            [imdb2emf.serialize :as bin])
+  (:require [imdb2emf.core            :as i2e]
+            [imdb2emf.fast-xmi-export :as xmi]
+            [imdb2emf.serialize       :as bin])
   (:gen-class))
 
 (defn -main [& args]

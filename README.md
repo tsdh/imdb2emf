@@ -48,12 +48,12 @@ efficient and much faster to load.  Those files have the ending `.movies.bin`.
 
 You need the very same IMDb files as explained above, but you don't need the
 `lein` script or clone this repository.  Instead, download
-[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-0.1.1-standalone.jar).
+[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-0.1.2-standalone.jar).
 
 Using that, you can parse the IMDb files by executing the JAR:
 
 ````
-$ java -jar imdb2emf-0.1.1-standalone.jar 
+$ java -jar imdb2emf-0.1.2-standalone.jar
 Usage: lein run <imdb-dir>
        lein run <imdb-dir> <max-movie-count>
 ````

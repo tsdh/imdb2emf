@@ -1,4 +1,4 @@
-(ns imdb2emf.fast-save
+(ns imdb2emf.fast-xmi-export
   (:require [clojure.java.io   :as io]
             [clojure.string    :as str]
             [imdb2emf.core     :as i2e]
