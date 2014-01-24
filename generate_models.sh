@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-i=5000;
-while ((i < 800000)); do
+i=100000;
+while ((i < 110000)); do
     lein run imdb $i
-    i=$((i + 5000))
+    i=$((i + 100000))
 done
