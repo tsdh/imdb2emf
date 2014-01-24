@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 i=5000;
 while ((i < 800000)); do
