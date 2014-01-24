@@ -16,7 +16,7 @@
                           (Integer/parseInt max-movie-count)
                           -1)
         model (i2e/parse-imdb imdb-dir max-movie-count)
-        fname (format "imdb-%06d-%s.movies"
+        fname (format "imdb-%07d-%s.movies"
                       (if (== -1 max-movie-count)
                         "all"
                         max-movie-count)
