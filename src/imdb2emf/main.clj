@@ -1,7 +1,8 @@
 (ns imdb2emf.main
   (:require [imdb2emf.core            :as i2e]
             [imdb2emf.fast-xmi-export :as xmi]
-            [imdb2emf.serialize       :as bin])
+            [imdb2emf.serialize       :as bin]
+            [funnyqt.emf              :as emf])
   (:gen-class))
 
 (defn -main [& args]
@@ -15,8 +16,10 @@
                           (Integer/parseInt max-movie-count)
                           -1)
         model (i2e/parse-imdb imdb-dir max-movie-count)
-        fname (if (= -1 max-movie-count)
-                "imdb.movies"
-                (str "imdb-" max-movie-count ".movies"))]
+        fname (format "imdb-%s-%s.movies"
+                      (if (== -1 max-movie-count)
+                        "all"
+                        max-movie-count)
+                      (count (emf/eallobjects model)))]
     (xmi/save-movies-model model fname)
     (bin/save-movies-model model (str fname ".bin"))))
