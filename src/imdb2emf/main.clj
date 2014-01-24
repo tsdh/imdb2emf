@@ -16,10 +16,10 @@
                           (Integer/parseInt max-movie-count)
                           -1)
         model (i2e/parse-imdb imdb-dir max-movie-count)
-        fname (format "imdb-%07d-%s.movies"
+        fname (format "imdb-%s-%s.movies"
                       (if (== -1 max-movie-count)
                         "all"
-                        max-movie-count)
+                        (format "%07d" max-movie-count))
                       (count (emf/eallobjects model)))]
     (xmi/save-movies-model model fname)
     (bin/save-movies-model model (str fname ".bin"))))
