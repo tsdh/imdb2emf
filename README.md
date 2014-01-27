@@ -1,6 +1,7 @@
-# imdb2emf: an IMDb parser creating EMF models
+# imdb2emf: an IMDb parser creating EMF models or TGraphs
 
-This little tool creates an EMF model from the IMDb files.
+This little tool creates an EMF model (or a
+[JGraLab TGraph](http://jgralab.github.io/jgralab/)) from the IMDb files.
 
 ## Usage
 
