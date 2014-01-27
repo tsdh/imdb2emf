@@ -25,13 +25,16 @@ $ cd imdb2emf
 $ lein run
 Usage: lein run <kind> <imdb-dir>
        lein run <kind> <imdb-dir> <max-movie-count>
+<kind> should either be EMF to create EMF models or TG to create TGraphs.
+<imdb-dir> is the directory containing the IMDb files.
+<max-movie-count> is the maximum number of movies to be parsed.
 $ lein run EMF path/to/imdb/ 1000
 ````
 
 The last command will parse the first 1000 movies, all ratings of those movies,
-and all actors and actresses that act at least in one of these movies.  (First,
-the movies.list.gz file is parsed.  Thereafter, the actors.list.gz,
-actresses.list.gz, and ratings.list.gz are parsed in parallel).
+and all actors and actresses that act at least in one of these movies into an
+EMF model.  (First, the movies.list.gz file is parsed.  Thereafter, the
+actors.list.gz, actresses.list.gz, and ratings.list.gz are parsed in parallel).
 
 If you don't provide a maximum movie number, it'll parse the complete database.
 That will be about one million movies (300k of which are rated), 1.5 million
@@ -57,6 +60,9 @@ Using that, you can parse the IMDb files by executing the JAR:
 $ java -jar imdb2emf-0.2.0-standalone.jar
 Usage: lein run <kind> <imdb-dir>
        lein run <kind> <imdb-dir> <max-movie-count>
+<kind> should either be EMF to create EMF models or TG to create TGraphs.
+<imdb-dir> is the directory containing the IMDb files.
+<max-movie-count> is the maximum number of movies to be parsed.
 ````
 
 ### Loading binary movie models
