@@ -23,9 +23,9 @@ Then clone this project and run it:
 $ git clone https://github.com/tsdh/imdb2emf.git
 $ cd imdb2emf
 $ lein run
-Usage: lein run <imdb-dir>
-       lein run <imdb-dir> <max-movie-count>
-$ lein run path/to/imdb/ 1000
+Usage: lein run <kind> <imdb-dir>
+       lein run <kind> <imdb-dir> <max-movie-count>
+$ lein run EMF path/to/imdb/ 1000
 ````
 
 The last command will parse the first 1000 movies, all ratings of those movies,
@@ -37,9 +37,10 @@ If you don't provide a maximum movie number, it'll parse the complete database.
 That will be about one million movies (300k of which are rated), 1.5 million
 actors, 800k actresses, and nearly 8 million references between objects.
 
-The resulting XMI model files are named `imdb-<max-movie-count>.movies` if a
-maximum movie number was provided and `imdb.movies` when the complete database
-is parsed.
+The resulting XMI model files are named
+`imdb-<max-movie-count>-<element-count>.movies` if a maximum movie number was
+provided and `imdb-all-<element-count>.movies` when the complete database is
+parsed.
 
 Additionally, the models are saved in a binary coding which is more space
 efficient and much faster to load.  Those files have the ending `.movies.bin`.
@@ -48,14 +49,14 @@ efficient and much faster to load.  Those files have the ending `.movies.bin`.
 
 You need the very same IMDb files as explained above, but you don't need the
 `lein` script or clone this repository.  Instead, download
-[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-0.1.2-standalone.jar).
+[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-0.2.0-standalone.jar).
 
 Using that, you can parse the IMDb files by executing the JAR:
 
 ````
-$ java -jar imdb2emf-0.1.2-standalone.jar
-Usage: lein run <imdb-dir>
-       lein run <imdb-dir> <max-movie-count>
+$ java -jar imdb2emf-0.2.0-standalone.jar
+Usage: lein run <kind> <imdb-dir>
+       lein run <kind> <imdb-dir> <max-movie-count>
 ````
 
 ### Loading binary movie models

@@ -33,6 +33,11 @@
 (def ^:dynamic ^:private *movies-map*)
 (def ^:dynamic ^:private *model*)
 
+(def movietype-movie      (emf/eenum-literal 'MovieType.MOVIE))
+(def movietype-tv         (emf/eenum-literal 'MovieType.TV))
+(def movietype-video      (emf/eenum-literal 'MovieType.VIDEO))
+(def movietype-videogame  (emf/eenum-literal 'MovieType.VIDEOGAME))
+
 (def movie-rx #"^([^\"\(]+)\s(\(\d\d\d\d(?:/[IVXCM]+)?\))\s(\([A-Z]+\))?\s+(\d\d\d\d)$")
 (defn parse-movies [file-name max-movie-count]
   (let [i (atom 0)]

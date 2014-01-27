@@ -6,8 +6,7 @@
             [funnyqt.polyfns   :as poly]))
 
 (defn ref-list [refs pos-map]
-  (str/join " " (map #(str "/" (pos-map %))
-                     refs)))
+  (str/join " " (map #(str "/" (pos-map %)) refs)))
 
 (defn escape-val [el attr]
   (-> (emf/eget el attr)

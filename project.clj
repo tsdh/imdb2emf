@@ -1,6 +1,6 @@
 (defproject imdb2emf "0.2.0"
   :description "A Parser from IMDb files to EMF models or JGraLab TGraphs."
-  :url "http://example.com/FIXME"
+  :url "https://github.com/tsdh/imdb2emf"
   :license {:name "GNU General Public License"
             :url "http://www.gnu.org/licenses/gpl.html"
             :distribution :repo}
