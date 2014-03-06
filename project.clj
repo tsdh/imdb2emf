@@ -4,8 +4,8 @@
   :license {:name "GNU General Public License"
             :url "http://www.gnu.org/licenses/gpl.html"
             :distribution :repo}
-  :dependencies [[org.clojure/clojure "1.5.1"]
-                 [funnyqt "0.15.3"]]
+  :dependencies [[org.clojure/clojure "1.6.0-beta2"]
+                 [funnyqt "0.17.5"]]
   :jvm-opts ^:replace ["-Xmx2G"]
   :global-vars {*warn-on-reflection* true
                 *assert* false}
