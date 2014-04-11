@@ -19,14 +19,14 @@
 
 (poly/declare-polyfn to-xml [el pos-map])
 
-(poly/defpolyfn to-xml 'movies.Person [el pos-map]
+(poly/defpolyfn to-xml movies.Person [el pos-map]
   (str "  <movies:" (.getName ^org.eclipse.emf.ecore.EClass (emf/eclass el))
        (when-let [ms (seq (emf/eget el :movies))]
          (str " movies=\"" (ref-list ms pos-map) "\""))
        " name=\"" (escape-val el :name) "\""
        "/>"))
 
-(poly/defpolyfn to-xml 'movies.Movie [el pos-map]
+(poly/defpolyfn to-xml movies.Movie [el pos-map]
   (str "  "
        "<movies:Movie "
        (when-let [ps (seq (emf/eget el :persons))]

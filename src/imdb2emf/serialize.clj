@@ -3,8 +3,7 @@
             [clojure.string    :as str]
             [imdb2emf.core     :as i2e]
             [funnyqt.generic   :as g]
-            [funnyqt.emf       :as emf]
-            [funnyqt.polyfns   :as poly])
+            [funnyqt.emf       :as emf])
   (:import (java.io DataOutputStream FileOutputStream Serializable
                     DataInputStream FileInputStream EOFException
                     BufferedInputStream BufferedOutputStream))
