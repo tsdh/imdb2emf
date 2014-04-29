@@ -12,19 +12,19 @@
    :methods [^:static [readBinaryMoviesFile [String] org.eclipse.emf.ecore.resource.Resource]]))
 
 (defn save-movies-model [model ^String file-name]
-  (let [movie-pos-map (zipmap (emf/eallobjects model 'Movie)
+  (let [movie-pos-map (zipmap (emf/eallcontents model 'Movie)
                               (range))]
     (println "Saving model to" file-name)
     (with-open [oos (DataOutputStream. (BufferedOutputStream.
                                         (FileOutputStream. file-name)))]
-      (doseq [movie (emf/eallobjects model 'Movie)]
+      (doseq [movie (emf/eallcontents model 'Movie)]
         ;; tag: 0 => Movie
         (.writeByte oos 0)
         (.writeUTF oos (emf/eget movie :title))
         (.writeShort oos (emf/eget movie :year))
         (.writeByte oos (.getValue ^org.eclipse.emf.ecore.EEnumLiteral (emf/eget movie :type)))
         (.writeDouble oos (emf/eget movie :rating)))
-      (doseq [person (emf/eallobjects model 'Person)]
+      (doseq [person (emf/eallcontents model 'Person)]
         ;; tag: 1 => Actor, 2 => Actress
         (.writeByte oos (if (g/has-type? person 'Actor) 1 2))
         (.writeUTF oos (emf/eget person :name))

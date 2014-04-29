@@ -37,7 +37,7 @@
 (defn save-movies-model [model file-name]
   (println "Saving model to" file-name)
   (with-open [w (java.io.PrintWriter. (io/file file-name))]
-    (doseq [el (emf/eallobjects model 'Person)]
+    (doseq [el (emf/eallcontents model 'Person)]
       (.println w (to-line el)))
-    (doseq [el (emf/eallobjects model 'Movie)]
+    (doseq [el (emf/eallcontents model 'Movie)]
       (.println w (to-line el)))))

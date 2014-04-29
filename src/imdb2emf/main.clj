@@ -10,7 +10,7 @@
 (defn elem-count [m]
   (if (tg/graph? m)
     (tg/vcount m)
-    (count (emf/eallobjects m))))
+    (count (emf/eallcontents m))))
 
 (defn save-model [m fname]
   (if (tg/graph? m)

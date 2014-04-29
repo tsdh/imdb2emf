@@ -42,14 +42,14 @@
        "/>"))
 
 (defn save-movies-model [model file-name]
-  (let [pos-map (zipmap (emf/eallobjects model)
+  (let [pos-map (zipmap (emf/eallcontents model)
                         (range))]
     (println "Saving model to" file-name)
     (with-open [w (java.io.PrintWriter. (io/file file-name))]
       (.println w "<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
       (.println w "<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:movies=\"http://movies/1.0\">")
 
-      (doseq [el (emf/eallobjects model)]
+      (doseq [el (emf/eallcontents model)]
         (.println w (to-xml el pos-map)))
 
       (.println w "</xmi:XMI>"))))
