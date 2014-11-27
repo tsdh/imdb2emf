@@ -69,7 +69,7 @@
         cls (if (re-matches #".*/actresses\..*" file-name)
               'Actress
               'Actor)
-        current-actor  (atom nil)
+        current-actor-name  (atom nil)
         current-movies (atom #{})]
     (doseq [l (file-line-seq file-name)
             :let [match (re-matches actor-rx l)]]
@@ -78,15 +78,15 @@
               movie-id (str/trim movie-id)]
           (when actor-name
             ;; New actor starts, so persist the current one
-            (when (and @current-actor (seq @current-movies))
+            (when (and @current-actor-name (seq @current-movies))
               (swap! i inc)
               (locking *model*
                 (g/create-element! *model* cls
-                                   {:name   actor-name
+                                   {:name   @current-actor-name
                                     :movies @current-movies})
                 (when +verbose+
-                  (println (str cls ": " actor-name " \t=> " (count @current-movies) " Movie(s)")))))
-            (reset! current-actor  actor-name)
+                  (println (str cls ": " @current-actor-name " \t=> " (count @current-movies) " Movie(s)")))))
+            (reset! current-actor-name  actor-name)
             (reset! current-movies #{}))
           (when-let [movie (@*movies-map* movie-id)]
             (swap! current-movies conj movie)))))
