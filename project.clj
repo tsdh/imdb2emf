@@ -5,7 +5,7 @@
             :url "http://www.gnu.org/licenses/gpl.html"
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.7.0-alpha4"]
-                 [funnyqt "0.33.0"]]
+                 [funnyqt "0.33.1"]]
   :jvm-opts ^:replace ["-Xmx6G"]
   :global-vars {*warn-on-reflection* true
                 *assert* false}

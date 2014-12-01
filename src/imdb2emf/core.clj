@@ -63,30 +63,31 @@
             (println (str "Movie: " title " (" year ") " type))))))
     @i))
 
-(def actor-rx #"^([^\t]+)?\t+((?:[^\"\(\t]+)\s(?:\(\d\d\d\d(?:/[IVXCM]+)?\))(?:\s+\([A-Z]+\))?).*")
-(defn parse-actors [file-name]
+(def person-rx #"^([^\t]+)?\t+((?:[^\"\(\t]+)\s(?:\(\d\d\d\d(?:/[IVXCM]+)?\))(?:\s+\([A-Z]+\))?).*")
+(defn parse-persons [file-name]
   (let [i (atom 0)
-        cls (if (re-matches #".*/actresses\..*" file-name)
-              'Actress
-              'Actor)
-        current-actor-name  (atom nil)
+        cls (cond
+             (re-matches #".*/actresses\..*" file-name) 'Actress
+             (re-matches #".*/actors\..*"    file-name) 'Actor
+             (re-matches #".*/directors\..*" file-name) 'Director)
+        current-name  (atom nil)
         current-movies (atom #{})]
     (doseq [l (file-line-seq file-name)
-            :let [match (re-matches actor-rx l)]]
+            :let [match (re-matches person-rx l)]]
       (when match
-        (let [[_ actor-name movie-id] match
+        (let [[_ person-name movie-id] match
               movie-id (str/trim movie-id)]
-          (when actor-name
-            ;; New actor starts, so persist the current one
-            (when (and @current-actor-name (seq @current-movies))
+          (when person-name
+            ;; New person starts, so persist the current one
+            (when (and @current-name (seq @current-movies))
               (swap! i inc)
               (locking *model*
                 (g/create-element! *model* cls
-                                   {:name   @current-actor-name
+                                   {:name   @current-name
                                     :movies @current-movies})
                 (when +verbose+
-                  (println (str cls ": " @current-actor-name " \t=> " (count @current-movies) " Movie(s)")))))
-            (reset! current-actor-name  actor-name)
+                  (println (str cls ": " @current-name " \t=> " (count @current-movies) " Movie(s)")))))
+            (reset! current-name  person-name)
             (reset! current-movies #{}))
           (when-let [movie (@*movies-map* movie-id)]
             (swap! current-movies conj movie)))))
@@ -116,14 +117,15 @@
                            (u/errorf "kind must be :tg or :emf but was %." kind))
             *movies-map* (atom {})]
     (let [cmovies       (parse-movies (pick-file dir "movies") max-movie-count)
-          fut-actors    (future (parse-actors  (pick-file dir "actors")))
-          fut-actresses (future (parse-actors  (pick-file dir "actresses")))
+          fut-actors    (future (parse-persons (pick-file dir "actors")))
+          fut-actresses (future (parse-persons (pick-file dir "actresses")))
+          fut-directors (future (parse-persons (pick-file dir "directors")))
           fut-ratings   (future (parse-ratings (pick-file dir "ratings")))
-          [cactors cactresses cratings] [@fut-actors @fut-actresses @fut-ratings]]
+          [cactors cactresses cdirectors cratings] [@fut-actors @fut-actresses @fut-directors @fut-ratings]]
       (println)
       (println "Parsed" cmovies "movies with" cactors "actors,"
-               cactresses "actresses, and"
+               cactresses "actresses," cdirectors "directors, and"
                cratings "ratings.")
-      (println (+ cmovies cactors cactresses) "elements in total.")
+      (println (+ cmovies cactors cactresses cdirectors) "elements in total.")
       (println))
     *model*))
