@@ -13,6 +13,6 @@ abstract VertexClass ActingPerson : Person;
 VertexClass Actor : ActingPerson;
 VertexClass Actress: ActingPerson;
 
-EdgeClass HasActor	  from Movie (0,*)        role movies       to Person (0,*)   role persons;
+EdgeClass HasPerson	  from Movie (0,*)        role movies       to Person (0,*)   role persons;
 EdgeClass HasDirectorRole from ActingPerson (0,1) role actingPerson to Director (0,1) role director;
 EdgeClass HasGenre        from Movie (0,*)                          to Genre (0,*)    role genres;
