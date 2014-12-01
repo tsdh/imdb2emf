@@ -73,10 +73,10 @@
                   (emf/eset! m :title (.readUTF ois))
                   (emf/eset! m :year  (int (.readShort ois)))
                   (emf/eset! m :type  (condp == (.readByte ois)
-                                        0   i2e/movietype-movie
-                                        1   i2e/movietype-tv
-                                        2   i2e/movietype-video
-                                        3   i2e/movietype-videogame))
+                                        0   (emf/eenum-literal 'MovieType.MOVIE)
+                                        1   (emf/eenum-literal 'MovieType.TV)
+                                        2   (emf/eenum-literal 'MovieType.VIDEO)
+                                        3   (emf/eenum-literal 'MovieType.VIDEOGAME)))
                   (emf/eset! m :rating (.readDouble ois))
                   (loop [i (.readInt ois)]
                     (when-not (== i -1)
