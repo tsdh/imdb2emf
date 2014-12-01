@@ -11,4 +11,5 @@ imdb/
 bin/
 doc/
 *.movies
-*.bin
+*.movies.bin
+*.movies.tg.gz
