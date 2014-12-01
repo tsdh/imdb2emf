@@ -33,13 +33,15 @@ $ lein run EMF path/to/imdb/ 1000
 ````
 
 The last command will parse the first 1000 movies, all ratings of those movies,
-and all actors and actresses that act at least in one of these movies into an
-EMF model.  (First, the movies.list.gz file is parsed.  Thereafter, the
-actors.list.gz, actresses.list.gz, and ratings.list.gz are parsed in parallel).
+all actors and actresses that act at least in one of these movies, the movies'
+directors, and genres into an EMF model.  (First, the movies.list.gz file is
+parsed.  Thereafter, the actors.list.gz, actresses.list.gz, directors.list.gz,
+genres.list.gz and ratings.list.gz are parsed in parallel).
 
 If you don't provide a maximum movie number, it'll parse the complete database.
-That will be about one million movies (300k of which are rated), 1.5 million
-actors, 800k actresses, and nearly 8 million references between objects.
+That will be about one million movies (300k of which are rated), 1.7 million
+actors, 900k actresses, 330k directors, and nearly 8 million references between
+objects.
 
 The resulting XMI model files are named
 `imdb-<max-movie-count>-<element-count>.movies` if a maximum movie number was
@@ -53,12 +55,12 @@ efficient and much faster to load.  Those files have the ending `.movies.bin`.
 
 You need the very same IMDb files as explained above, but you don't need the
 `lein` script or clone this repository.  Instead, download
-[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-1.1.0-standalone.jar).
+[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-1.3.0-standalone.jar).
 
 Using that, you can parse the IMDb files by executing the JAR:
 
 ````
-$ java -jar imdb2emf-1.1.0-standalone.jar
+$ java -jar imdb2emf-1.3.0-standalone.jar
 Usage: lein run <kind> <imdb-dir>
        lein run <kind> <imdb-dir> <max-movie-count>
 <kind> should either be EMF to create EMF models or TG to create TGraphs.
