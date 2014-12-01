@@ -5,16 +5,14 @@ GraphClass IMDbGraph;
 EnumDomain MovieType (MOVIE, TV, VIDEO, VIDEOGAME);
 VertexClass Movie {title: String, rating: Double, year : Integer, type : MovieType};
 
+VertexClass Genre {name: String};
+
 abstract VertexClass Person {name: String};
-VertexClass Actor : Person;
-VertexClass Actress: Person;
+VertexClass Director : Person;
+abstract VertexClass ActingPerson : Person;
+VertexClass Actor : ActingPerson;
+VertexClass Actress: ActingPerson;
 
-abstract VertexClass Group {avgRating: Double};
-VertexClass Couple : Group;
-VertexClass Clique : Group;
-
-EdgeClass HasActor	 from Movie (0,*) role movies to Person (0,*) role persons;
-EdgeClass HasCommonMovie from Group (0,*)	      to Movie (0,*) role commonMovies;
-EdgeClass HasFirstActor	 from Couple (0,*)	      to Person (1,1) role p1;
-EdgeClass HasSecondActor from Couple (0,*)	      to Person (1,1) role p2;
-EdgeClass HasCliqueActor from Clique (0,*)	      to Person (0,*) role persons;
+EdgeClass HasActor	  from Movie (0,*)        role movies       to Person (0,*)   role persons;
+EdgeClass HasDirectorRole from ActingPerson (0,1) role actingPerson to Director (0,1) role director;
+EdgeClass HasGenre        from Movie (0,*)                          to Genre (0,*)    role genres;

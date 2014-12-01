@@ -9,6 +9,7 @@
            (java.io File)))
 
 (def +verbose+ true)
+(def +print-non-matching+ false)
 
 (emf/load-ecore-resource (io/resource "movies.ecore"))
 
@@ -31,6 +32,7 @@
      :else (u/errorf "No such file: %s or %s" f gf))))
 
 (def ^:dynamic ^:private *movie-map*)
+(def ^:dynamic ^:private *person-map*)
 (def ^:dynamic ^:private *genre-map*)
 (def ^:dynamic ^:private *model*)
 
@@ -39,16 +41,28 @@
 (def movietype-video      (emf/eenum-literal 'MovieType.VIDEO))
 (def movietype-videogame  (emf/eenum-literal 'MovieType.VIDEOGAME))
 
-(def movie-rx #"^([^\"\(]+)\s(\(\d\d\d\d(?:/[IVXCM]+)?\))\s(\([A-Z]+\))?\s+(\d\d\d\d)$")
+;; We don't parse TV serials.  Those line's have the series title enclosed in
+;; "...".
+(def movie-id-rx #"(([^\"]+)\s(\(\d\d\d\d(?:/[IVXCM]+)?\))(?:\s(\([A-Z]+\)))?(?:\s\{\{[^}]+\}\})?)")
+(def movie-rx (re-pattern (str #"^" movie-id-rx #"\t+(\d\d\d\d)$")))
 (defn parse-movies [file-name max-movie-count]
-  (let [i (volatile! 0)]
+  (let [i (volatile! 0)
+        ^java.io.Writer w (when +print-non-matching+
+                            (io/writer "non-matching-movies.txt"))]
     (doseq [l (file-line-seq file-name)
             :while (or (== -1 max-movie-count)
                        (< @i max-movie-count))
-            :let [match (re-matches movie-rx l)]
+            :let [match (re-matches movie-rx l)
+                  _ (when (and +print-non-matching+
+                               (not match)
+                               (seq l)
+                               (not= "\"" (subs l 0 1)))
+                      (.append w ^String l)
+                      (.append w "\n"))]
             :when match]
       (vswap! i inc)
-      (let [[_ title year-n type year] match
+      (let [[_ movie-id title year-n type year] match
+            movie-id (str/trim movie-id)
             movie (g/create-element!
                    *model* 'Movie
                    {:title title
@@ -57,24 +71,36 @@
                              "(V)"  (g/enum-constant *model* 'MovieType.VIDEO)
                              "(VG)" (g/enum-constant *model* 'MovieType.VIDEOGAME)
                              "(TV)" (g/enum-constant *model* 'MovieType.TV)
-                             nil    (g/enum-constant *model* 'MovieType.MOVIE))})
-            movie-id (str/trim (str title " " year-n (when type (str " " type))))]
+                             nil    (g/enum-constant *model* 'MovieType.MOVIE))})]
         (swap! *movie-map* assoc movie-id movie)
         (when +verbose+
           (println (str "Movie: " title " (" year ") " type)))))
     @i))
 
-(def person-rx #"^([^\t]+)?\t+((?:[^\"\(\t]+)\s(?:\(\d\d\d\d(?:/[IVXCM]+)?\))(?:\s+\([A-Z]+\))?).*")
+(defn ^:private no-such-movie [movie-id when-parsing]
+  (when (and +verbose+ (not= "\"" (subs movie-id 0 1)))
+    (println (str "No such movie: <<<" movie-id ">>> (" when-parsing ")"))))
+
+(def person-rx (re-pattern (str #"^([^\t]+)?\t+" movie-id-rx #".*")))
 (defn parse-persons [file-name]
   (let [i (volatile! 0)
         cls (cond
              (re-matches #".*/actresses\..*" file-name) 'Actress
              (re-matches #".*/actors\..*"    file-name) 'Actor
              (re-matches #".*/directors\..*" file-name) 'Director)
+        ^java.io.Writer w (when +print-non-matching+
+                            (io/writer (format "non-matching-%s.txt"
+                                               (case cls
+                                                 Actor    "actors"
+                                                 Actress  "actresses"
+                                                 Director "directors"))))
         current-name   (volatile! nil)
         current-movies (volatile! #{})]
     (doseq [l (file-line-seq file-name)
-            :let [match (re-matches person-rx l)]
+            :let [match (re-matches person-rx l)
+                  _ (when (and +print-non-matching+ (not match) (seq l))
+                      (.append w ^String l)
+                      (.append w "\n"))]
             :when match]
       (let [[_ person-name movie-id] match
             movie-id (str/trim movie-id)]
@@ -83,37 +109,55 @@
           (when (and @current-name (seq @current-movies))
             (vswap! i inc)
             (locking *model*
-              (g/create-element! *model* cls
-                                 {:name   @current-name
-                                  :movies @current-movies})
+              (let [p (g/create-element! *model* cls
+                                         {:name   @current-name
+                                          :movies @current-movies})
+                    other (seq (filter (g/type-matcher *model*
+                                                       (if (= cls 'Director)
+                                                         'ActingPerson
+                                                         'Director))
+                                       (@*person-map* @current-name)))]
+                (when other
+                  (g/set-adj! p (if (= cls 'Director) :actingPerson :director) (first other)))
+                (swap! *person-map* update @current-name conj p))
               (when +verbose+
                 (println (str cls ": " @current-name " \t=> " (count @current-movies) " Movie(s)")))))
           (vreset! current-name  person-name)
           (vreset! current-movies #{}))
-        (when-let [movie (@*movie-map* movie-id)]
-          (vswap! current-movies conj movie))))
+        (if-let [movie (@*movie-map* movie-id)]
+          (vswap! current-movies conj movie)
+          (no-such-movie movie-id cls))))
     @i))
 
-(def ratings-rx #"\s+(?:[0-9.\*]+)\s+(?:\d+)\s+(\d+\.\d)\s+((?:[^\"\(\t]+)\s(?:\(\d\d\d\d(?:/[IVXCM]+)?\))(?:\s+\([A-Z]+\))?)")
+(def ratings-rx (re-pattern (str #"\s+(?:[0-9.\*]+)\s+(?:\d+)\s+(\d+\.\d)\s+" movie-id-rx #"$")))
 (defn parse-ratings [file-name]
-  (let [i (volatile! 0)]
+  (let [i (volatile! 0)
+        ^java.io.Writer w (when +print-non-matching+
+                            (io/writer "non-matching-ratings.txt"))]
     (doseq [l (drop-while #(not= "MOVIE RATINGS REPORT" %)
                           (file-line-seq file-name))
-            :let [match (re-matches ratings-rx l)]
+            :let [match (re-matches ratings-rx l)
+                  _ (when (and +print-non-matching+ (not match) (seq l))
+                      (.append w ^String l)
+                      (.append w "\n"))]
             :when match]
       (let [[_ rating movie-id] match
             movie-id (str/trim movie-id)]
-        (when-let [movie (@*movie-map* movie-id)]
-          (vswap! i inc)
-          (locking *model*
-            (g/set-aval! movie :rating (Double/parseDouble rating))
-            (when +verbose+
-              (println (str "Rating: " movie-id "\t=> " rating)))))))
+        (if-let [movie (@*movie-map* movie-id)]
+          (do
+            (vswap! i inc)
+            (locking *model*
+              (g/set-aval! movie :rating (Double/parseDouble rating))
+              (when +verbose+
+                (println (str "Rating: " movie-id "\t=> " rating)))))
+          (no-such-movie movie-id "Rating"))))
     @i))
 
 (def genre-rx #"^([^\t]+)\t+([-\w]+)$")
 (defn parse-genres [file-name]
   (let [i (volatile! 0)
+        ^java.io.Writer w (when +print-non-matching+
+                            (io/writer "non-matching-genres.txt"))
         get-genre (fn [genre-name]
                     (or (@*genre-map* genre-name)
                         (let [g (g/create-element! *model* 'Genre {:name genre-name})]
@@ -121,7 +165,10 @@
                           g)))]
     (doseq [l (drop-while  #(not= "8: THE GENRES LIST" %)
                            (file-line-seq file-name))
-            :let [match (re-matches genre-rx l)]
+            :let [match (re-matches genre-rx l)
+                  _ (when (and +print-non-matching+ (not match) (seq l))
+                      (.append w ^String l)
+                      (.append w "\n"))]
             :when match]
       (let [[_ movie-id genre-name] match
             movie-id (str/trim movie-id)]
@@ -129,19 +176,20 @@
           (do
             (vswap! i inc)
             (locking *model*
-              (g/set-adj! movie :genre (get-genre genre-name))
+              (g/add-adj! movie :genres (get-genre genre-name))
               (when +verbose+
                 (println (str "Genre: " movie-id "\t=> " genre-name)))))
-          (println (str "No such movie: <<<" movie-id ">>>")))))
+          (no-such-movie movie-id "Genre"))))
     @i))
 
 (defn parse-imdb [kind dir max-movie-count]
-  (binding [*model*      (case kind
-                           :tg (tg/new-graph (tg/load-schema (io/resource "movies.tg")))
-                           :emf (emf/new-resource)
-                           (u/errorf "kind must be :tg or :emf but was %." kind))
-            *movie-map* (atom {})
-            *genre-map* (atom {})]
+  (binding [*model* (case kind
+                      :tg (tg/new-graph (tg/load-schema (io/resource "movies.tg")))
+                      :emf (emf/new-resource)
+                      (u/errorf "kind must be :tg or :emf but was %." kind))
+            *movie-map*  (atom {})
+            *person-map* (atom {})
+            *genre-map*  (atom {})]
     (let [cmovies       (parse-movies (pick-file dir "movies") max-movie-count)
           fut-actors    (future (parse-persons (pick-file dir "actors")))
           fut-actresses (future (parse-persons (pick-file dir "actresses")))
