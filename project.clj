@@ -4,7 +4,7 @@
   :license {:name "GNU General Public License"
             :url "http://www.gnu.org/licenses/gpl.html"
             :distribution :repo}
-  :dependencies [[funnyqt "0.33.2"]]
+  :dependencies [[funnyqt "0.35.1"]]
   :jvm-opts ^:replace ["-Xmx6G"]
   :global-vars {*warn-on-reflection* true
                 *assert* false}
