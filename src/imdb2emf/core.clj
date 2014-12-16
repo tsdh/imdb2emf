@@ -16,10 +16,12 @@
 (defn file-line-seq [^String file-name]
   (cond
    (.endsWith file-name ".list.gz")
-   (line-seq (io/reader (GZIPInputStream. (io/input-stream file-name))))
+   (line-seq (io/reader (GZIPInputStream. (io/input-stream file-name))
+                        :encoding "ISO-8859-15"))
 
    (.endsWith file-name ".list")
-   (line-seq (io/reader (io/file file-name)))
+   (line-seq (io/reader (io/file file-name)
+                        :encoding "ISO-8859-15"))
 
    :else (u/errorf "Unknown file type: %s" file-name)))
 
