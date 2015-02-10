@@ -55,12 +55,12 @@ efficient and much faster to load.  Those files have the ending `.movies.bin`.
 
 You need the very same IMDb files as explained above, but you don't need the
 `lein` script or clone this repository.  Instead, download
-[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-1.3.1-standalone.jar).
+[this precompiled JAR](http://userpages.uni-koblenz.de/~horn/imdb2emf-1.4.0-standalone.jar).
 
 Using that, you can parse the IMDb files by executing the JAR:
 
 ````
-$ java -jar imdb2emf-1.3.1-standalone.jar
+$ java -jar imdb2emf-1.4.0-standalone.jar
 Usage: lein run <kind> <imdb-dir>
        lein run <kind> <imdb-dir> <max-movie-count>
 <kind> should either be EMF to create EMF models or TG to create TGraphs.
@@ -82,6 +82,6 @@ It returns a standard EMF resource containing all movies and persons.
 
 ## License
 
-Copyright © 2014 Tassilo Horn <horn@uni-koblenz.de>
+Copyright © 2014, 2015 Tassilo Horn <horn@uni-koblenz.de>
 
 Distributed under the GNU General Public License, version 3 (or later).
